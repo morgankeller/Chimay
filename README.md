@@ -1,2 +1,2 @@
-Chimay
+Chimay - Brewery Tracking Software
 ======
