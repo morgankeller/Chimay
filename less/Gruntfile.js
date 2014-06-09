@@ -160,7 +160,7 @@ module.exports = function (grunt) {
           sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
         },
         files: {
-          'dist/css/<%= pkg.name %>.css': '../less/bootstrap.less'
+          'dist/css/<%= pkg.name %>.css': '../less/custom-bootstrap.less'
         }
       },
       compileTheme: {
@@ -232,6 +232,7 @@ module.exports = function (grunt) {
       core: {
         files: {
           'dist/css/<%= pkg.name %>.min.css': 'dist/css/<%= pkg.name %>.css',
+          '../www-root/css/<%= pkg.name %>.min.css': 'dist/css/<%= pkg.name %>.css',
           'dist/css/<%= pkg.name %>-theme.min.css': 'dist/css/<%= pkg.name %>-theme.css'
         }
       },
@@ -292,6 +293,10 @@ module.exports = function (grunt) {
           'fonts/*'
         ],
         dest: 'docs/dist'
+      },
+      prod: {
+        src: 'dist/js/bootstrap.min.js',
+        dest: '../www-root/js/bootstrap.min.js'
       }
     },
 
@@ -438,7 +443,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-docs', 'copy:docs');
 
   // Full distribution task.
-  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-js', 'dist-docs']);
+  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-js', 'dist-docs','copy']);
 
   // Default task.
   grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
