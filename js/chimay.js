@@ -32,6 +32,7 @@ INVOICE = {
     	},
     dashboardSetup     : function(){
     	// dashboard setup
+    	listMessages();
     }
   },
   client : {
@@ -132,16 +133,13 @@ INVOICE = {
   }
 }
 
-function listPaidInvoices() {
+function listMessages() {
 	$.ajax({
-		url: "api.php?function=listInvoices&paid=1",
+		url: "api.php?function=listMessages",
 		cache: false
 		}).done(function(data) {
 			$.each(data,function() {
-				// format SQL DATETIME to JS Date object
-				var invoiceDate = formatDate(this.invoiceDate);
-				var invoiceDue = formatDate(this.invoiceDue);
-				$(".invoice-paid-table").append('<tr><td><a href="invoice.php?invoiceID='+this.invoiceID+'">'+this.invoiceID+'</a></td><td><a href="client.php?clientID='+this.clientID+'">'+this.clientName+'</a></td><td>'+invoiceDate+'</td><td>'+invoiceDue+'</td><td>$'+this.invoiceTotal+'</td></tr>');
+				$(".message-table").append('<tr><td>'+this.messageTitle+'</td><td>'+this.userFirstName+'</td><td>'+this.messageBody+'</td></tr>');
 			});
 	});
 }

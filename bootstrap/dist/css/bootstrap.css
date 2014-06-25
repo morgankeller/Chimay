@@ -6174,7 +6174,7 @@ button.close {
  */
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+  padding-top: 80px;
 }
 /*
  * Global add-ons
@@ -6186,6 +6186,9 @@ body {
 /*
  * Navbar
  */
+.navbar {
+  min-height: 80px;
+}
 .navbar-btn {
   margin-right: 10px;
   margin-left: 10px;
@@ -6213,21 +6216,6 @@ body {
     border-right: 1px solid #eee;
   }
 }
-/* Sidebar navigation */
-.nav-sidebar {
-  margin-right: -21px;
-  /* 20px padding + 1px border */
-  margin-bottom: 20px;
-  margin-left: -20px;
-}
-.nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
-}
-.nav-sidebar > .active > a {
-  color: #fff;
-  background-color: #428bca;
-}
 /*
  * Main content
  */
@@ -6254,27 +6242,6 @@ body {
 .legend-color {
   width: 20px;
   margin-right: 10px;
-}
-/**************
-*** Invoice ***
-**************/
-.row {
-  margin-right: 0;
-  margin-left: 0;
-}
-.even {
-  background-color: #ccc;
-}
-.row-item {
-  padding-top: 20px;
-  margin-top: 20px;
-}
-.row-item {
-  font-size: 11px !important;
-  border-top: 1px solid #ccc !important;
-}
-.row-item:last-of-type {
-  border-bottom: 2px solid #ccc !important;
 }
 /*
  * Placeholder dashboard ideas

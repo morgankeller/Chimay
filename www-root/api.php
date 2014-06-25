@@ -1,6 +1,6 @@
 <?php
 require_once('config.php');
-class Invoice {
+class Chimay {
 	
 	var $link;
 	
@@ -33,29 +33,23 @@ class Invoice {
 	}
 	
 	//////////////
-	/* Invoices */
+	/* Messages */
 	//////////////
 	
 	/* List Invoices */
-	public function listInvoices($paid=null,$estimate=null) {
-		$invoices = array();
-		if($paid != null && $estimate == null) {
-			$sql = "SELECT * FROM `invoices`, `clients` WHERE `invoices`.clientID = `clients`.clientID AND `invoices`.invoicePaid = ".$paid." AND `invoiceEstimate` = 0";
-		} else if($estimate != null) {
-			$sql = "SELECT * FROM `invoices`, `clients` WHERE `invoices`.clientID = `clients`.clientID AND `invoiceEstimate` = 1";
-		} else {
-			$sql = "SELECT * FROM `invoices`, `clients` WHERE `invoices`.clientID = `clients`.clientID AND `invoiceEstimate` = 0";
-		}
+	public function listMessages() {
+		$messages = array();
+		$sql = "SELECT * FROM `messages`,`users` WHERE `messages`.userID = `users`.userID ORDER BY `messages`.messageCreated ASC";
 		$res = mysqli_query($this->link,$sql);
 		$fields = mysqli_fetch_fields($res);
 		$i=0;
 		while($row = mysqli_fetch_array($res)) {
 			foreach($fields as $f) {
-				$invoices[$i][$f->name] = $row[$f->name];
+				$messages[$i][$f->name] = $row[$f->name];
 			}
 			$i++;
 		}
-		return $invoices;
+		return $messages;
 	}
 	
 	/* List Invoice Detail, including row data */
@@ -277,7 +271,7 @@ class Invoice {
 	/* Save Client */
 	public function saveClient($data) {
 		$client = $this->processGET($data);
-		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`,`clientContact`,`clientEmail`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."','".$client['clientContact']."','".$client['clientEmail']."')";
+		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."')";
 		$res = mysqli_query($this->link,$sql);
 		$client['clientID'] = mysqli_insert_id($this->link);
 		$client['clientStatus'] = "success";
@@ -407,7 +401,7 @@ class Invoice {
 //error_reporting(-1);
 //header("Content-type: text/plain; charset=utf-8");
 if(isset($_GET['function'])) {
-	$invoice = new Invoice;
+	$chimay = new Chimay;
 	switch($_GET['function']) {
 		case 'listUsers':
 			header('Content-Type: application/json');
@@ -417,15 +411,9 @@ if(isset($_GET['function'])) {
 				echo(json_encode($invoice->listUsers()));
 			}
 			break;
-		case 'listInvoices':
+		case 'listMessages':
 			header('Content-Type: application/json');
-			if(isset($_GET['paid']) && isset($_GET['estimate'])) {
-				echo(json_encode($invoice->listInvoices($_GET['paid'],$_GET['estimate'])));
-			} else if(isset($_GET['paid'])) {
-				echo(json_encode($invoice->listInvoices($_GET['paid'])));
-			}  else {
-				echo(json_encode($invoice->listInvoices()));
-			}
+			echo(json_encode($chimay->listMessages()));
 			break;
 		case 'listClients':
 			header('Content-Type: application/json');
@@ -481,7 +469,7 @@ if(isset($_GET['function'])) {
 		case 'saveClient':
 			header('Content-Type: application/json');
 			if(isset($_GET)) {
-				echo(json_encode($invoice->saveClient($_GET)));
+				echo(json_encode($chimay->saveClient($_GET)));
 			}
 			break;
 		case 'editClient':
@@ -502,7 +490,7 @@ if(isset($_GET['function'])) {
 				$userPassword = '';
 			}
 			header('Content-Type: application/json');
-			echo(json_encode($invoice->checkCreds($userName,$userPassword)));
+			echo(json_encode($chimay->checkCreds($userName,$userPassword)));
 			break;
 		/*
 		case 'search':

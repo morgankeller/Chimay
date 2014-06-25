@@ -4,7 +4,7 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+  padding-top: 80px;
 }
 
 
@@ -20,6 +20,9 @@ body {
 /*
  * Navbar
  */
+.navbar {
+	min-height: 80px;
+}
 
 .navbar-btn {
   margin-right: 10px;
@@ -49,22 +52,6 @@ body {
     border-right: 1px solid #eee;
   }
 }
-
-/* Sidebar navigation */
-.nav-sidebar {
-  margin-right: -21px; /* 20px padding + 1px border */
-  margin-bottom: 20px;
-  margin-left: -20px;
-}
-.nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
-}
-.nav-sidebar > .active > a {
-  color: #fff;
-  background-color: #428bca;
-}
-
 
 /*
  * Main content
@@ -97,36 +84,6 @@ body {
   width: 20px;
   margin-right: 10px;
 }
-
-/**************
-*** Invoice ***
-**************/
-
-.row {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.even {
-  background-color: #CCCCCC;
-}
-
-.row-item {
-  //margin-bottom: 10px;
-  margin-top: 20px;
-  padding-top: 20px;
-}
-
-.row-item {
-  border-top: 1px solid #CCCCCC !important;
-  font-size: 11px !important;
-}
-
-.row-item:last-of-type {
-  border-bottom: 2px solid #CCCCCC !important;
-}
-
-
 
 /*
  * Placeholder dashboard ideas
