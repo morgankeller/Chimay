@@ -61,20 +61,6 @@ include_once('header.php');
 			</div>
 		</div>
 	</div>
-	<!-- Client Contact -->
-	<div class="row">
-		<div class="form-group">
-			<div class="col-xs-2">
-				<label for="clientContact" class="control-label">Client Contact</label>
-			</div>
-			<div class="col-xs-5">
-				<input type="text" class="form-control" id="clientContact" name="clientContact" placeholder="client name">
-			</div>
-			<div class="col-xs-5">
-				<input type="text" class="form-control" id="clientEmail" name="clientEmail" placeholder="email">
-			</div>
-		</div>
-	</div>
 	<!-- Save -->
 	<div class="row">
 		<div class="form-group">

@@ -89,7 +89,7 @@ class Chimay {
 	private function processGET($data) {
 		$invoice = array();
 		foreach($data as $key => $val) {
-			$invoice[$key] = $val;
+			$invoice[$key] = addslashes($val);
 		}
 		return $invoice;
 	}
@@ -272,6 +272,7 @@ class Chimay {
 	public function saveClient($data) {
 		$client = $this->processGET($data);
 		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."')";
+		//$sql = mysqli_real_escape_string($this->link,$sql);
 		$res = mysqli_query($this->link,$sql);
 		$client['clientID'] = mysqli_insert_id($this->link);
 		$client['clientStatus'] = "success";
@@ -281,8 +282,10 @@ class Chimay {
 	/* Edit Client */
 	public function editClient($clientID,$data) {
 		$client = $this->processGET($data);
-		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."' , `clientContact` = '".$client['clientContact']."' , `clientEmail` = '".$client['clientEmail']."' WHERE clientID = ".$clientID;
+		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."' WHERE clientID = ".$clientID;
+		//$sql = mysqli_real_escape_string($this->link,$sql);
 		$res = mysqli_query($this->link,$sql);
+		$client['sql'] = $sql;
 		$client['clientStatus'] = "success";
 		return $client;
 	}
@@ -406,9 +409,9 @@ if(isset($_GET['function'])) {
 		case 'listUsers':
 			header('Content-Type: application/json');
 			if(isset($_GET['userIDs'])) {
-				echo(json_encode($invoice->listUsers($_GET['userIDs'])));
+				echo(json_encode($chimay->listUsers($_GET['userIDs'])));
 			} else {
-				echo(json_encode($invoice->listUsers()));
+				echo(json_encode($chimay->listUsers()));
 			}
 			break;
 		case 'listMessages':
@@ -418,53 +421,53 @@ if(isset($_GET['function'])) {
 		case 'listClients':
 			header('Content-Type: application/json');
 			if(isset($_GET['clientID']) && is_numeric($_GET['clientID'])) {
-				echo(json_encode($invoice->listClients($_GET['clientID'])));
+				echo(json_encode($chimay->listClients($_GET['clientID'])));
 			} else if (isset($_GET['clientID']) && $_GET['clientID'] != 'undefined') {
-				echo(json_encode($invoice->listClients()));
+				echo(json_encode($chimay->listClients()));
 			} else {
-				echo(json_encode($invoice->listClients()));
+				echo(json_encode($chimay->listClients()));
 			}
 			break;
 		case 'saveInvoice':
 			header('Content-Type: application/json');
 			if(isset($_GET)) {
-				echo(json_encode($invoice->saveInvoice($_GET)));
+				echo(json_encode($chimay->saveInvoice($_GET)));
 			}
 			break;
 		case 'editInvoice':
 			header('Content-Type: application/json');
 			if(isset($_GET)) {
-				echo(json_encode($invoice->editInvoice($_GET['invoiceID'],$_GET)));
+				echo(json_encode($chimay->editInvoice($_GET['invoiceID'],$_GET)));
 			}
 			break;
 		case 'listInvoiceDetail':
 			if(isset($_GET['invoiceID']) && is_numeric($_GET['invoiceID'])) {
 				header('Content-Type: application/json');
-				echo(json_encode($invoice->listInvoiceDetail($_GET['invoiceID'])));
+				echo(json_encode($chimay->listInvoiceDetail($_GET['invoiceID'])));
 			}
 			break;
 		
 		case 'invoicePaid':
 			header("Content-type: text/plain; charset=utf-8");
 			if(isset($_GET['invoiceID']) && is_numeric($_GET['invoiceID'])) {
-				echo(json_encode($invoice->invoicePaid($_GET['invoiceID'])));
+				echo(json_encode($chimay->invoicePaid($_GET['invoiceID'])));
 			}
 			break;
 		case 'pdfInvoice':
 			if(isset($_GET['invoiceID']) && is_numeric($_GET['invoiceID'])) {
-				$invoice->pdfInvoice($_GET['invoiceID']);
+				$chimay->pdfInvoice($_GET['invoiceID']);
 			}
 		case 'paidData':
 			header('Content-Type: application/json');
-			echo(json_encode($invoice->paidData()));
+			echo(json_encode($chimay->paidData()));
 			break;
 		case 'clientPercentage':
 			header('Content-Type: application/json');
-			echo(json_encode($invoice->clientPercentage()));
+			echo(json_encode($chimay->clientPercentage()));
 			break;
 		case 'estimateAndInvoice':
 			header('Content-Type: application/json');
-			echo(json_encode($invoice->estimateAndInvoice()));
+			echo(json_encode($chimay->estimateAndInvoice()));
 			break;
 		case 'saveClient':
 			header('Content-Type: application/json');
@@ -475,7 +478,7 @@ if(isset($_GET['function'])) {
 		case 'editClient':
 			header('Content-Type: application/json');
 			if(isset($_GET)) {
-				echo(json_encode($invoice->editClient($_GET['clientID'],$_GET)));
+				echo(json_encode($chimay->editClient($_GET['clientID'],$_GET)));
 			}
 			break;
 		case 'checkCreds':
