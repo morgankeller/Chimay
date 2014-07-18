@@ -15,13 +15,15 @@ include_once('header.php');
             <table class="table table-striped">
               <tbody class="client-table">
                 <!--
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
+                -->
+              </tbody>
+            </table>
+          </div>
+          <h2 class="sub-header">Contacts</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody class="contact-table">
+                <!--
                 -->
               </tbody>
             </table>
@@ -31,13 +33,6 @@ include_once('header.php');
             <table class="table table-striped">
               <tbody class="message-table">
                 <!--
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
                 -->
               </tbody>
             </table>

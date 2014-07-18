@@ -288,6 +288,51 @@ class Chimay {
 		return $client;
 	}
 	
+	//////////////
+	/* Contacts */
+	//////////////
+
+	/* List Contacts */
+	public function listContacts($contactID=null) {
+		$contacts = array();
+		if($contactID != null) {
+			$sql = "SELECT * FROM `contacts` WHERE contactID =".$contactID;
+		} else {
+			$sql = "SELECT * FROM `contacts`";
+		}
+		$res = mysqli_query($this->link,$sql);
+		$fields = mysqli_fetch_fields($res);
+		$i=0;
+		while($row = mysqli_fetch_array($res)) {
+			foreach($fields as $f) {
+				$contacts[$i][$f->name] = $row[$f->name];
+			}
+			$i++;
+		}
+		return $contacts;
+	}
+	
+	/* Save Contacts */
+	public function saveContact($data) {
+		$contact = $this->processGET($data);
+		$sql = "INSERT INTO `contacts` (`contactFirstName`,`contactLastName`,`contactEmail`,`contactPhone`,`clientID`,`userID`) VALUES ('".$contact['contactFirstName']."','".$contact['contactLastName']."','".$contact['contactEmail']."','".$contact['contactPhone']."','".$contact['clientID']."','".$_COOKIE['userID']."')";
+		$res = mysqli_query($this->link,$sql);
+		$contact['sql'] = $sql;
+		$contact['contactID'] = mysqli_insert_id($this->link);
+		$contact['contactStatus'] = "success";
+		return $contact;
+	}
+	
+	/* Edit Contacts */
+	public function editContact($contactID,$data) {
+		$contact = $this->processGET($data);
+		$sql = "UPDATE `contacts` SET `contactFirstName` = '".$contact['contactFirstName']."' , `contactLastName` = '".$contact['contactLastName']."' , `contactEmail` = '".$contact['contactEmail']."' , `contactPhone` = '".$contact['contactPhone']."' , `clientID` = '".$contact['clientID']."' , `userID` = '".$_COOKIE['userID']."' WHERE contactID = ".$contactID;
+		$res = mysqli_query($this->link,$sql);
+		$contact['sql'] = $sql;
+		$contact['contactStatus'] = "success";
+		return $contact;
+	}
+
 	/////////////
 	/* Reports */
 	/////////////
@@ -426,16 +471,14 @@ if(isset($_GET['function'])) {
 				echo(json_encode($chimay->listClients()));
 			}
 			break;
-		case 'saveInvoice':
+		case 'listContacts':
 			header('Content-Type: application/json');
-			if(isset($_GET)) {
-				echo(json_encode($chimay->saveInvoice($_GET)));
-			}
-			break;
-		case 'editInvoice':
-			header('Content-Type: application/json');
-			if(isset($_GET)) {
-				echo(json_encode($chimay->editInvoice($_GET['invoiceID'],$_GET)));
+			if(isset($_GET['contactID']) && is_numeric($_GET['contactID'])) {
+				echo(json_encode($chimay->listContacts($_GET['contactID'])));
+			} else if (isset($_GET['contactID']) && $_GET['contactID'] != 'undefined') {
+				echo(json_encode($chimay->listContacts()));
+			} else {
+				echo(json_encode($chimay->listContacts()));
 			}
 			break;
 		case 'listInvoiceDetail':
@@ -477,6 +520,18 @@ if(isset($_GET['function'])) {
 			header('Content-Type: application/json');
 			if(isset($_GET)) {
 				echo(json_encode($chimay->editClient($_GET['clientID'],$_GET)));
+			}
+			break;
+		case 'saveContact':
+			header('Content-Type: application/json');
+			if(isset($_GET)) {
+				echo(json_encode($chimay->saveContact($_GET)));
+			}
+			break;
+		case 'editContact':
+			header('Content-Type: application/json');
+			if(isset($_GET)) {
+				echo(json_encode($chimay->editContact($_GET['contactID'],$_GET)));
 			}
 			break;
 		case 'checkCreds':

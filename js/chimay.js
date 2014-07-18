@@ -34,6 +34,7 @@ INVOICE = {
     	// dashboard setup
     	listMessages();
     	listClients();
+    	listContacts();
     }
   },
   client : {
@@ -72,6 +73,56 @@ INVOICE = {
 				});
 				
 		});
+		
+    }
+  },
+  contact : {
+    init     : function(){
+    	// Populate Client Dropdown
+    	clientDropdown();
+    	// Update Client information on change to Client selector
+    	$(document).on("change","#clientID",function() {
+    		var clientID = $(this).val();
+    		clientInfo(clientID);
+    	});
+    	// Form Submission
+    	$(".save-button").on("click",function(event) {
+			event.preventDefault();
+			var dataAction = $(this).attr('data-action');
+			//console.log($(this).serialize());
+			$.ajax({
+				url: "api.php?function="+dataAction+"&"+$(".contact-form").serialize(),
+				cache: false
+				}).done(function(data) {
+					// insert some error checking here
+					
+					// success, go Home
+					window.location.replace('index.php?contact='+data.contactID);
+			});
+		});
+    },
+    editContact	:  function() {
+    	var contactID = getParameterByName('contactID');
+    	// update save action
+    	$(".save-button").attr('data-action','editContact');
+    	// pull in data from invoice
+    	$.ajax({
+			url: "api.php?function=listContacts&contactID="+contactID,
+			cache: false
+			}).done(function(data) {
+				// populate form
+				$('input,textarea').each(function() {
+					var inputID = $(this).attr('id');
+					$(this).val(data[0][inputID]);
+					
+					//alert('inputID: '+inputID+', data: '+data[0][inputID]);
+				});
+				// Select Client from dropdown
+				$("#clientID > option[value="+data[0].clientID+"]").attr("selected",true);
+				// Pull Client information
+				clientInfo(data[0].clientID);
+		});
+
 		
     }
   },
@@ -156,6 +207,17 @@ function listClients() {
 	});
 }
 
+function listContacts() {
+	$.ajax({
+		url: "api.php?function=listContacts",
+		cache: false
+		}).done(function(data) {
+			$.each(data,function() {
+				$(".contact-table").append('<tr><td><a href="contact.php?contactID='+this.contactID+'">'+this.contactFirstName+' '+this.contactLastName+'</a></td><td><a href="tel:'+this.contactPhone+'">'+this.contactPhone+'</a></td><td><a href="mailto:'+this.contactEmail+'" target="_blank">'+this.contactEmail+'</a></td><td><a class="btn btn-primary" role="button" href="contact.php?contactID='+this.contactID+'">Edit</a></td></tr>');
+			});
+	});
+}
+
 function createLegend(data) {
 	var chartData = data;
 	var output = '<ul class="legend-list">';
@@ -190,9 +252,9 @@ function clientInfo(clientID) {
 			cache: false
 			}).done(function(data) {
 				if(data[0].clientAddress2 != '') {
-					var output = '<h4>'+data[0].clientName+'</h4><p>Attn: '+data[0].clientContact+'<br />'+data[0].clientAddress1+'<br />'+data[0].clientAddress2+'<br />'+data[0].clientCity+', '+data[0].clientState+' '+data[0].clientZip+'</p>';
+					var output = '<h4>'+data[0].clientName+'</h4><p>'+data[0].clientAddress1+'<br />'+data[0].clientAddress2+'<br />'+data[0].clientCity+', '+data[0].clientState+' '+data[0].clientZip+'</p>';
 				} else {
-					var output = '<h4>'+data[0].clientName+'</h4><p>Attn: '+data[0].clientContact+'<br />'+data[0].clientAddress1+'<br />'+data[0].clientCity+', '+data[0].clientState+' '+data[0].clientZip+'</p>';
+					var output = '<h4>'+data[0].clientName+'</h4><p>'+data[0].clientAddress1+'<br />'+data[0].clientCity+', '+data[0].clientState+' '+data[0].clientZip+'</p>';
 				}
 				$(".client-info").html(output);
 		});
