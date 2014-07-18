@@ -315,7 +315,7 @@ class Chimay {
 	/* Save Contacts */
 	public function saveContact($data) {
 		$contact = $this->processGET($data);
-		$sql = "INSERT INTO `contacts` (`contactFirstName`,`contactLastName`,`contactEmail`,`contactPhone`,`clientID`,`userID`) VALUES ('".$contact['contactFirstName']."','".$contact['contactLastName']."','".$contact['contactEmail']."','".$contact['contactPhone']."','".$contact['clientID']."','".$_COOKIE['userID']."')";
+		$sql = "INSERT INTO `contacts` (`contactFirstName`,`contactLastName`,`contactTitle`,`contactEmail`,`contactPhone`,`clientID`,`userID`) VALUES ('".$contact['contactFirstName']."','".$contact['contactLastName']."','".$contact['contactTitle']."','".$contact['contactEmail']."','".$contact['contactPhone']."','".$contact['clientID']."','".$_COOKIE['userID']."')";
 		$res = mysqli_query($this->link,$sql);
 		$contact['sql'] = $sql;
 		$contact['contactID'] = mysqli_insert_id($this->link);
@@ -326,7 +326,7 @@ class Chimay {
 	/* Edit Contacts */
 	public function editContact($contactID,$data) {
 		$contact = $this->processGET($data);
-		$sql = "UPDATE `contacts` SET `contactFirstName` = '".$contact['contactFirstName']."' , `contactLastName` = '".$contact['contactLastName']."' , `contactEmail` = '".$contact['contactEmail']."' , `contactPhone` = '".$contact['contactPhone']."' , `clientID` = '".$contact['clientID']."' , `userID` = '".$_COOKIE['userID']."' WHERE contactID = ".$contactID;
+		$sql = "UPDATE `contacts` SET `contactFirstName` = '".$contact['contactFirstName']."' , `contactLastName` = '".$contact['contactLastName']."' ,`contactTitle` = '".$contact['contactTitle']."' , `contactEmail` = '".$contact['contactEmail']."' , `contactPhone` = '".$contact['contactPhone']."' , `clientID` = '".$contact['clientID']."' , `userID` = '".$_COOKIE['userID']."' WHERE contactID = ".$contactID;
 		$res = mysqli_query($this->link,$sql);
 		$contact['sql'] = $sql;
 		$contact['contactStatus'] = "success";

@@ -30,7 +30,7 @@ include_once('header.php');
 			</div>
 		</div>
 	</div>
-	<!-- Contact first name -->
+	<!-- Contact last name -->
 	<div class="row">
 		<div class="form-group">
 			<div class="col-xs-2">
@@ -38,6 +38,17 @@ include_once('header.php');
 			</div>
 			<div class="col-xs-10">
 				<input type="text" class="form-control" id="contactLastName" name="contactLastName" placeholder="last name">
+			</div>
+		</div>
+	</div>
+	<!-- Contact title -->
+	<div class="row">
+		<div class="form-group">
+			<div class="col-xs-2">
+				<label for="contactTitle" class="control-label">Title</label>
+			</div>
+			<div class="col-xs-10">
+				<input type="text" class="form-control" id="contactTitle" name="contactTitle" placeholder="title">
 			</div>
 		</div>
 	</div>
