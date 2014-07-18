@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title><?php echo pageTitle; ?> - <?php echo siteName; ?></title>
 
     <!-- Bootstrap -->
@@ -30,7 +30,7 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
 	    </button>
-	    <a class="navbar-brand" href="<?php echo siteRoot; ?>"><img src="<?php echo headerLogo; ?>" alt="<?php echo siteName; ?>" /></a>
+	    <a class="navbar-brand" href="<?php echo siteRoot; ?>"><img src="<?php echo headerLogo; ?>" alt="<?php echo siteName; ?>" class="img-responsive" /></a>
 	  </div>
 	  <div class="navbar-collapse collapse">
 	    <ul class="nav navbar-nav navbar-right">
