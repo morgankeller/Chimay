@@ -138,7 +138,7 @@ class Chimay {
 		require_once('api-pdf.php');
 		// http://www.fpdf.org/
 		$invoiceData = $this->listInvoiceDetail($invoiceID);
-		$clientData = $this->listClients($invoiceData['clientID']);
+		$clientData = $this->listClients(null,$invoiceData['clientID']);
 		//print_r($invoiceData);
 
 		$pdf = new PDF('P','pt');
@@ -162,7 +162,7 @@ class Chimay {
 
 		// Client Information
 		$pdf->SetFont('Arial','B',14);
-		$clientData = $this->listClients($invoiceData['clientID']);
+		$clientData = $this->listClients(null,$invoiceData['clientID']);
 		$pdf->Cell(0,24,$clientData[0]['clientName'],'T',1);
 		$pdf->SetFont('Arial','',12);
 		$pdf->Cell(0,12,'ATTN: '.$clientData[0]['clientContact'],0,1);
@@ -249,12 +249,12 @@ class Chimay {
 	//////////////
 	
 	/* List Clients */
-	public function listClients($clientID=null) {
+	public function listClients($limit=5,$clientID=null) {
 		$clients = array();
 		if($clientID != null) {
 			$sql = "SELECT * FROM `clients` WHERE clientID =".$clientID;
 		} else {
-			$sql = "SELECT * FROM `clients`";
+			$sql = "SELECT * FROM `clients` ORDER BY `clients`.`clientCreated` DESC LIMIT ".$limit;
 		}
 		$res = mysqli_query($this->link,$sql);
 		$fields = mysqli_fetch_fields($res);
@@ -464,9 +464,11 @@ if(isset($_GET['function'])) {
 		case 'listClients':
 			header('Content-Type: application/json');
 			if(isset($_GET['clientID']) && is_numeric($_GET['clientID'])) {
-				echo(json_encode($chimay->listClients($_GET['clientID'])));
+				echo(json_encode($chimay->listClients(null,$_GET['clientID'])));
 			} else if (isset($_GET['clientID']) && $_GET['clientID'] != 'undefined') {
 				echo(json_encode($chimay->listClients()));
+			} else if(isset($_GET['limit']) && is_numeric($_GET['limit'])){
+				echo(json_encode($chimay->listClients($_GET['limit'])));
 			} else {
 				echo(json_encode($chimay->listClients()));
 			}

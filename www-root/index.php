@@ -10,7 +10,7 @@ include_once('header.php');
       <div class="row">
         <div class="col-sm-12 main">
           <h1 class="page-header">Dashboard!</h1>
-          <h2 class="sub-header">Clients</h2>
+          <h2 class="sub-header">New Clients <a href="client-dashboard.php" class="btn btn-success" role="button">View All</a></h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <tbody class="client-table">

@@ -76,6 +76,12 @@ INVOICE = {
 		
     }
   },
+  clientDashboard : {
+    init     : function(){
+    	// list clients
+    	listClients(10000);
+		}
+  },
   contact : {
     init     : function(){
     	// Populate Client Dropdown
@@ -196,9 +202,14 @@ function listMessages() {
 	});
 }
 
-function listClients() {
+function listClients(limit) {
+	var clientURL = "api.php?function=listClients";
+	if(typeof(limit)!=='undefined') {
+		clientURL += "&limit="+limit;
+	}
 	$.ajax({
-		url: "api.php?function=listClients",
+		//url: "api.php?function=listClients",
+		url: clientURL,
 		cache: false
 		}).done(function(data) {
 			$.each(data,function() {
@@ -237,7 +248,7 @@ function formatDate(mysqlDate) {
 
 function clientDropdown() {
 	$.ajax({
-			url: "api.php?function=listClients",
+			url: "api.php?function=listClients&limit=10000",
 			cache: false
 			}).done(function(data) {
 				$.each(data,function() {

@@ -54,7 +54,7 @@ include_once('header.php');
 				<input type="text" class="form-control" id="clientCity" name="clientCity" placeholder="city">
 			</div>
 			<div class="col-xs-2">
-				<input type="text" class="form-control" id="clientState" name="clientState" placeholder="state">
+				<input type="text" class="form-control" id="clientState" name="clientState" placeholder="state" value="CA">
 			</div>
 			<div class="col-xs-3">
 				<input type="text" class="form-control" id="clientZip" name="clientZip" placeholder="zip">
