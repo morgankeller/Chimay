@@ -6260,4 +6260,11 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+/*
+ * Clients
+ */
+.client-form .row {
+  margin-right: 0;
+  margin-left: 0;
+}
 /*# sourceMappingURL=bootstrap.css.map */

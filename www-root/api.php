@@ -271,8 +271,7 @@ class Chimay {
 	/* Save Client */
 	public function saveClient($data) {
 		$client = $this->processGET($data);
-		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."')";
-		//$sql = mysqli_real_escape_string($this->link,$sql);
+		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`,`clientWebsite`,`userID`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."','".$client['clientWebsite']."','".$_COOKIE['userID']."')";
 		$res = mysqli_query($this->link,$sql);
 		$client['clientID'] = mysqli_insert_id($this->link);
 		$client['clientStatus'] = "success";
@@ -282,8 +281,7 @@ class Chimay {
 	/* Edit Client */
 	public function editClient($clientID,$data) {
 		$client = $this->processGET($data);
-		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."' WHERE clientID = ".$clientID;
-		//$sql = mysqli_real_escape_string($this->link,$sql);
+		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."', `clientWebsite` = '".$client['clientWebsite']."', `userID` = '".$_COOKIE['userID']."' WHERE clientID = ".$clientID;
 		$res = mysqli_query($this->link,$sql);
 		$client['sql'] = $sql;
 		$client['clientStatus'] = "success";

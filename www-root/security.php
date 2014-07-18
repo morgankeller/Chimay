@@ -36,6 +36,7 @@
 			header('Location: login.php?login=nope&msg='.$data->{'text'});
 		} else {	//credentials are good
 			//continue
+			setcookie('userID',$data->{'userID'},time()+2592000);
 			setcookie('userName',$data->{'userName'},time()+2592000);
 			setcookie('userFirstName',$data->{'userFirstName'},time()+2592000);
 			setcookie('userEmail',$data->{'userEmail'},time()+2592000);

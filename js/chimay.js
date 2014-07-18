@@ -33,6 +33,7 @@ INVOICE = {
     dashboardSetup     : function(){
     	// dashboard setup
     	listMessages();
+    	listClients();
     }
   },
   client : {
@@ -140,6 +141,17 @@ function listMessages() {
 		}).done(function(data) {
 			$.each(data,function() {
 				$(".message-table").append('<tr><td>'+this.messageTitle+'</td><td>'+this.userFirstName+'</td><td>'+this.messageBody+'</td></tr>');
+			});
+	});
+}
+
+function listClients() {
+	$.ajax({
+		url: "api.php?function=listClients",
+		cache: false
+		}).done(function(data) {
+			$.each(data,function() {
+				$(".client-table").append('<tr><td><a href="client.php?clientID='+this.clientID+'">'+this.clientName+'</a></td><td>'+this.clientCity+'</td><td><a href="'+this.clientWebsite+'" target="_blank">'+this.clientWebsite+'</a></td><td><a class="btn btn-primary" role="button" href="client.php?clientID='+this.clientID+'">Edit</a></td></tr>');
 			});
 	});
 }

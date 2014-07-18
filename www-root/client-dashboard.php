@@ -61,17 +61,6 @@ include_once('header.php');
 			</div>
 		</div>
 	</div>
-	<!-- Website -->
-	<div class="row">
-		<div class="form-group">
-			<div class="col-xs-2">
-				<label for="clientWebsite" class="control-label">Website</label>
-			</div>
-			<div class="col-xs-10">
-				<input type="text" class="form-control" id="clientWebsite" name="clientWebsite" placeholder="website">
-			</div>
-		</div>
-	</div>
 	<!-- Save -->
 	<div class="row">
 		<div class="form-group">
