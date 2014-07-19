@@ -274,6 +274,7 @@ class Chimay {
 		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`,`clientWebsite`,`userID`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."','".$client['clientWebsite']."','".$_COOKIE['userID']."')";
 		$res = mysqli_query($this->link,$sql);
 		$client['clientID'] = mysqli_insert_id($this->link);
+		$latLong = $this->getLatLong($client['clientID']);
 		$client['clientStatus'] = "success";
 		return $client;
 	}
@@ -285,6 +286,7 @@ class Chimay {
 		$res = mysqli_query($this->link,$sql);
 		$client['sql'] = $sql;
 		$client['clientStatus'] = "success";
+		$latLong = $this->getLatLong($clientID);
 		return $client;
 	}
 	
@@ -331,6 +333,47 @@ class Chimay {
 		$contact['sql'] = $sql;
 		$contact['contactStatus'] = "success";
 		return $contact;
+	}
+
+	/////////////
+	/*   Map   */
+	/////////////
+	/* Get latitude and longitude for address */
+	public function getLatLong($clientID) {
+		$clientData = $this->listClients(null,$clientID);
+		$addressString = $clientData[0]['clientAddress1'].', '.$clientData[0]['clientCity'].', '.$clientData[0]['clientState'].', '.$clientData[0]['clientZip'];
+		$addressString = str_replace(' ','+',$addressString);
+		$apiURL = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$addressString.'&key=AIzaSyA2h2IUlawGFkeg2mXiq3AqLtIvGuSDGoI';
+		// pull data from Google
+		// https://developers.google.com/maps/documentation/geocoding/
+		$apiData = file_get_contents($apiURL);
+		$apiData = json_decode($apiData);
+		if($apiData->status == 'OK') {
+			$lat = $apiData->results[0]->geometry->location->lat;
+			$lng = $apiData->results[0]->geometry->location->lng;
+			$sql = "UPDATE `clients` SET `clientLat` = '".$lat."', `clientLng` = '".$lng."' WHERE clientID = ".$clientID;
+			$res = mysqli_query($this->link,$sql);
+			$result['sql'] = $sql;
+			$result['status'] = $apiData->status;
+			return $result;
+		} else {
+			return $apiData->status;
+		}
+	}
+
+	public function mapPoints() {
+		$points = array();
+		$sql = "SELECT `clientLat`, `clientLng`,`clientName` FROM `clients` WHERE `clientLat` != '0.0000000'";
+		$res = mysqli_query($this->link,$sql);
+		$fields = mysqli_fetch_fields($res);
+		$i=0;
+		while($row = mysqli_fetch_array($res)) {
+			foreach($fields as $f) {
+				$points[$i][$f->name] = $row[$f->name];
+			}
+			$i++;
+		}
+		return $points;
 	}
 
 	/////////////
@@ -549,6 +592,16 @@ if(isset($_GET['function'])) {
 			}
 			header('Content-Type: application/json');
 			echo(json_encode($chimay->checkCreds($userName,$userPassword)));
+			break;
+		case 'getLatLong':
+			header('Content-Type: application/json');
+			if(isset($_GET['clientID']) && is_numeric($_GET['clientID'])) {
+				echo(json_encode($chimay->getLatLong($_GET['clientID'])));
+			}
+			break;
+		case 'mapPoints':
+			header('Content-Type: application/json');
+			echo(json_encode($chimay->mapPoints()));
 			break;
 		/*
 		case 'search':

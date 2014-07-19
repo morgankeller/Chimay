@@ -36,7 +36,7 @@
 	    <ul class="nav navbar-nav navbar-right">
 	      <li><div><a href="client.php" class="btn btn-info navbar-btn">Add Client</a></div></li>
         <li><div><a href="contact.php" class="btn btn-info navbar-btn">Add Contact</a></div></li>
-	      <li><a href="#">Messages</a></li>
+	      <li><a href="map.php">Map</a></li>
 	      <li><a href="#">Profile</a></li>
 	      <li><a href="security.php?logout=yup">Log out</a></li>
 	    </ul>

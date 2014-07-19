@@ -132,60 +132,32 @@ INVOICE = {
 		
     }
   },
-  invoice : {
+  map : {
     init     : function(){
-    	// Populate Client Dropdown
-    	clientDropdown();
-    	// Update Client information on change to Client selector
-    	$(document).on("change","#clientID",function() {
-    		var clientID = $(this).val();
-    		clientInfo(clientID);
-    	});
-    	// Calculate totals
-    	calculateSubtotals();
-    	calculateTotal();
-    	// Date/Time pickers
-    	$("#invoiceDatePicker").datetimepicker();
-    	$("#invoiceDuePicker").datetimepicker();
-    	// Add Row
-    	$(".add-row-button").click(function() {
-    		$(".row-item:first").clone().appendTo(".invoice-rows");
-    		$(".row-item:last").find("input").val('');
-    	});
-   		// Update Numbers
-   		$(document).on("keyup",".update-total",function() {
-    		//update sub totals
-    		calculateSubtotals();
-    		//update master total
-    		calculateTotal();
-    	});
-    	// Delete Row
-    	$(document).on("click",".delete-row",function() {
-    		if($(".delete-row").length > 1) {
-	    		$(this).parent().parent().parent().parent().remove();
-	    		calculateSubtotals();
-	    		calculateTotal();
-    		}
-    	});
-    	// Form Submission
-    	$(".save-button").on("click",function(event) {
-			event.preventDefault();
-			var dataAction = $(this).attr('data-action');
-			//console.log($(this).serialize());
+    	//https://maps.googleapis.com/maps/api/js?key=AIzaSyA2h2IUlawGFkeg2mXiq3AqLtIvGuSDGoI
+    },
+    mapSetup	:  function() {
+		function initialize() {
+	        var mapOptions = {
+	          center: new google.maps.LatLng(34.0500, -118.2500),
+	          zoom: 10
+	        };
+	        var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+	        var marker;
 			$.ajax({
-				url: "api.php?function="+dataAction+"&"+$(".invoice-form").serialize(),
+				url: "api.php?function=mapPoints",
 				cache: false
 				}).done(function(data) {
-					// insert some error checking here
-					
-					// success, go to Invoices Page
-					window.location.replace('index.php?invoiceID='+data.invoiceID);
+					$.each(data,function() {
+						marker = new google.maps.Marker({
+					        position: new google.maps.LatLng(this.clientLat, this.clientLng),
+					        map: map,
+					        title: " "+this.clientName+" "
+					      });
+					});
 			});
-		});
-		// Alerts
-		//$(".alert").alert();
-    	},
-    addEstimate	: function() {
+	    }
+    	google.maps.event.addDomListener(window, 'load', initialize);
 
     }
   }
