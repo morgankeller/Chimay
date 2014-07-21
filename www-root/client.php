@@ -72,6 +72,17 @@ include_once('header.php');
 			</div>
 		</div>
 	</div>
+	<!-- Context -->
+	<div class="row">
+		<div class="form-group">
+			<div class="col-xs-2">
+				<label for="contextID" class="control-label">Context</label>
+			</div>
+			<div class="col-xs-10" id="contextIDContainer">
+				
+			</div>
+		</div>
+	</div>
 	<!-- Save -->
 	<div class="row">
 		<div class="form-group">

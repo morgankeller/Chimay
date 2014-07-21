@@ -39,6 +39,8 @@ INVOICE = {
   },
   client : {
     init     : function(){
+    	// client context radio buttons
+    	contextRadios();
     	// Form Submission
     	$(".save-button").on("click",function(event) {
 			event.preventDefault();
@@ -65,13 +67,12 @@ INVOICE = {
 			cache: false
 			}).done(function(data) {
 				// populate form
-				$('input,textarea').each(function() {
+				$("input[type!='radio'],textarea").each(function() {
 					var inputID = $(this).attr('id');
 					$(this).val(data[0][inputID]);
-					
-					//alert('inputID: '+inputID+', data: '+data[0][inputID]);
 				});
-				
+				// Select radio button of client context
+				$("#contextID"+data[0].contextID).attr("checked",true);
 		});
 		
     }
@@ -218,6 +219,19 @@ function formatDate(mysqlDate) {
 	return newDate.toLocaleDateString();
 }
 
+// Populate client context
+function contextRadios() {
+	$.ajax({
+			url: "api.php?function=listContexts",
+			cache: false
+			}).done(function(data) {
+				$.each(data,function() {
+					$("#contextIDContainer").append('<div class="radio"><label><input type="radio" name="contextID" id="contextID'+this.contextID+'" value="'+this.contextID+'">'+this.contextName+'</label></div>');
+				});
+		});
+}
+
+// Populate client dropdown
 function clientDropdown() {
 	$.ajax({
 			url: "api.php?function=listClients&limit=10000",

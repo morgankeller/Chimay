@@ -254,7 +254,7 @@ class Chimay {
 		if($clientID != null) {
 			$sql = "SELECT * FROM `clients` WHERE clientID =".$clientID;
 		} else {
-			$sql = "SELECT * FROM `clients` ORDER BY `clients`.`clientCreated` DESC LIMIT ".$limit;
+			$sql = "SELECT * FROM `clients` ORDER BY `clients`.`clientUpdated` DESC LIMIT ".$limit;
 		}
 		$res = mysqli_query($this->link,$sql);
 		$fields = mysqli_fetch_fields($res);
@@ -271,7 +271,7 @@ class Chimay {
 	/* Save Client */
 	public function saveClient($data) {
 		$client = $this->processGET($data);
-		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`,`clientWebsite`,`userID`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."','".$client['clientWebsite']."','".$_COOKIE['userID']."')";
+		$sql = "INSERT INTO `clients` (`clientName`,`clientAddress1`,`clientAddress2`,`clientCity`,`clientState`,`clientZip`,`clientWebsite`,`userID`,`contextID`) VALUES ('".$client['clientName']."','".$client['clientAddress1']."','".$client['clientAddress2']."','".$client['clientCity']."','".$client['clientState']."','".$client['clientZip']."','".$client['clientWebsite']."','".$_COOKIE['userID']."','".$client['contextID']."')";
 		$res = mysqli_query($this->link,$sql);
 		$client['clientID'] = mysqli_insert_id($this->link);
 		$latLong = $this->getLatLong($client['clientID']);
@@ -282,12 +282,28 @@ class Chimay {
 	/* Edit Client */
 	public function editClient($clientID,$data) {
 		$client = $this->processGET($data);
-		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."', `clientWebsite` = '".$client['clientWebsite']."', `userID` = '".$_COOKIE['userID']."' WHERE clientID = ".$clientID;
+		$sql = "UPDATE `clients` SET `clientName` = '".$client['clientName']."' , `clientAddress1` = '".$client['clientAddress1']."' , `clientAddress2` = '".$client['clientAddress2']."' , `clientCity` = '".$client['clientCity']."' , `clientState` = '".$client['clientState']."' , `clientZip` = '".$client['clientZip']."', `clientWebsite` = '".$client['clientWebsite']."', `userID` = '".$_COOKIE['userID']."',`contextID` = '".$client['contextID']."' WHERE clientID = ".$clientID;
 		$res = mysqli_query($this->link,$sql);
 		$client['sql'] = $sql;
 		$client['clientStatus'] = "success";
 		$latLong = $this->getLatLong($clientID);
 		return $client;
+	}
+
+	/* List Contexts */
+	public function listContexts() {
+		$contexts = array();
+		$sql = "SELECT * FROM `contexts`";
+		$res = mysqli_query($this->link,$sql);
+		$fields = mysqli_fetch_fields($res);
+		$i=0;
+		while($row = mysqli_fetch_array($res)) {
+			foreach($fields as $f) {
+				$contexts[$i][$f->name] = $row[$f->name];
+			}
+			$i++;
+		}
+		return $contexts;
 	}
 	
 	//////////////
@@ -602,6 +618,10 @@ if(isset($_GET['function'])) {
 		case 'mapPoints':
 			header('Content-Type: application/json');
 			echo(json_encode($chimay->mapPoints()));
+			break;
+		case 'listContexts':
+			header('Content-Type: application/json');
+			echo(json_encode($chimay->listContexts()));
 			break;
 		/*
 		case 'search':
