@@ -139,7 +139,7 @@ class Chimay {
 		if($contactID != null) {
 			$sql = "SELECT * FROM `contacts` WHERE contactID =".$contactID;
 		} else {
-			$sql = "SELECT * FROM `contacts`";
+			$sql = "SELECT * FROM `contacts` ORDER BY `contactUpdated` DESC";
 		}
 		$res = mysqli_query($this->link,$sql);
 		$fields = mysqli_fetch_fields($res);
