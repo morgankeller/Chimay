@@ -28,10 +28,10 @@ include_once('header.php');
               </tbody>
             </table>
           </div>
-          <h2 class="sub-header">Messages *coming soon*</h2>
+          <h2 class="sub-header">Notes</h2>
           <div class="table-responsive">
             <table class="table table-striped">
-              <tbody class="message-table">
+              <tbody class="notes">
                 <!--
                 -->
               </tbody>

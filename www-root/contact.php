@@ -80,11 +80,11 @@ include_once('header.php');
 			<div class="col-xs-2">
 				<label for="clientID" class="control-label">Client</label>
 			</div>
-			<div class="col-xs-4">
-				<select class="form-control" id="clientID" name="clientID"><option value="0"></option></select>
-			</div>
-			<div class="col-xs-5 col-xs-offset-1 client-info">
-				<!-- client contact information -->
+			<div class="col-xs-10">
+				<div class="checkbox" id="clientID">
+
+				</div>
+				<!-- <select class="form-control" id="clientID" name="clientID"><option value="0"></option></select> -->
 			</div>
 		</div>
 	</div>
