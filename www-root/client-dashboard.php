@@ -25,6 +25,9 @@ include_once('header.php');
       </div>
     </div>
   </div>
+  <?php 
+  if(isset($_GET['clientID'])) {
+  ?>
   <div class="row">
     <div class="col-sm-6 main">
       <div class="client-info">
@@ -79,5 +82,6 @@ include_once('header.php');
   </div>
 </div>
 <?php
+}
 	include_once('footer.php');
 ?>
