@@ -16,6 +16,11 @@ include_once('header.php');
           
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12 main map-legend">
+          
+        </div>
+      </div>
     </div>
 <?php
 	//print_r($_COOKIE);

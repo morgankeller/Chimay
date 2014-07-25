@@ -270,10 +270,14 @@ class Chimay {
 		}
 	}
 
-	/* Get all map points to build entire map */
-	public function mapPoints() {
+	/* Get map points to build map */
+	public function mapPoints($clientID=null) {
 		$points = array();
-		$sql = "SELECT `clientLat`, `clientLng`,`clientName` FROM `clients` WHERE `clientLat` != '0.0000000'";
+		if($clientID != null) {
+			$sql = "SELECT `clientLat`, `clientLng`,`clientName`,`contextID` FROM `clients` WHERE `clientID` = ".$clientID;
+		} else {
+			$sql = "SELECT `clientLat`, `clientLng`,`clientName`,`contextID` FROM `clients` WHERE `clientLat` != '0.0000000'";
+		}
 		$res = mysqli_query($this->link,$sql);
 		$fields = mysqli_fetch_fields($res);
 		$i=0;

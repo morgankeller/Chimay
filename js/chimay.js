@@ -143,7 +143,7 @@ INVOICE = {
   },
   map : {
     init     : function(){
-    	//https://maps.googleapis.com/maps/api/js?key=AIzaSyA2h2IUlawGFkeg2mXiq3AqLtIvGuSDGoI
+    	// https://maps.googleapis.com/maps/api/js?key=AIzaSyA2h2IUlawGFkeg2mXiq3AqLtIvGuSDGoI
     },
     mapSetup	:  function() {
 		function initialize() {
@@ -158,31 +158,21 @@ INVOICE = {
 				cache: false
 				}).done(function(data) {
 					$.each(data,function() {
+						// https://developers.google.com/maps/documentation/javascript/markers
 						marker = new google.maps.Marker({
 					        position: new google.maps.LatLng(this.clientLat, this.clientLng),
 					        map: map,
-					        title: " "+this.clientName+" "
+					        title: " "+this.clientName+" ",
+					        icon: "img/map-pins/"+this.contextID+".png"
 					      });
 					});
 			});
 	    }
     	google.maps.event.addDomListener(window, 'load', initialize);
-
+    	mapLegend();
     }
   }
 }
-/*
-function listNotes() {
-	$.ajax({
-		url: "api.php?function=listNotes",
-		cache: false
-		}).done(function(data) {
-			$.each(data,function() {
-				$(".note-table").append('<tr><td>'+this.noteTitle+'</td><td>'+this.userFirstName+'</td><td>'+this.noteBody+'</td></tr>');
-			});
-	});
-}
-*/
 
 function listClients(limit) {
 	var clientURL = "api.php?function=listClients";
@@ -274,6 +264,18 @@ function clientInfo(clientID) {
 					var output = '<address><strong>'+data[0].clientName+'</strong><br />'+data[0].clientAddress1+'<br />'+data[0].clientCity+', '+data[0].clientState+' '+data[0].clientZip+'</address>';
 				}
 				$(".client-info").html(output);
+		});
+}
+
+function mapLegend() {
+	$.ajax({
+			url: "api.php?function=listContexts",
+			cache: false
+			}).done(function(data) {
+				$(".map-legend").append('<div class=""><img src="img/map-pins/0.png" alt="not categorized" />Not Categorized</div>');
+				$.each(data,function() {
+					$(".map-legend").append('<div class=""><img src="img/map-pins/'+this.contextID+'.png" alt="'+this.contextName+'" />'+this.contextName+'</div>');
+				});
 		});
 }
 
